@@ -12,15 +12,15 @@ namespace FormFileStore
     public class DataStoreFile : IDataStore
     {
       
-        private const string PATH = @"c:\temp\database.txt";
+        private const string Path = @"c:\temp\database.txt";
         private Dictionary<long, long> position = new Dictionary<long, long>();
-
+    
         public DataStoreFile()
         {
            
-            if (!File.Exists(PATH))
+            if (!File.Exists(Path))
             {
-                FileStream file = File.Create(PATH);
+                FileStream file = File.Create(Path);
                 file.Close();
                 
             }
@@ -30,7 +30,7 @@ namespace FormFileStore
         public void AddPerson(Person person)
         {
                     
-            using (BinaryWriter bw = new BinaryWriter(new FileStream(PATH, FileMode.Append, FileAccess.Write)))
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Append, FileAccess.Write)))
             {
                 long index = bw.BaseStream.Length;
                 bw.Write(false);
@@ -49,7 +49,7 @@ namespace FormFileStore
         {
             Person tempPerson = null;
            
-            using (BinaryReader br = new BinaryReader(new FileStream(PATH, FileMode.Open, FileAccess.Read)))
+            using (BinaryReader br = new BinaryReader(new FileStream(Path, FileMode.Open, FileAccess.Read)))
             {
                 br.BaseStream.Seek(position[id], SeekOrigin.Begin);
                 
@@ -63,7 +63,7 @@ namespace FormFileStore
 
         public void DeletePerson(long id)
         {
-            using(BinaryReader br = new BinaryReader(new FileStream(PATH, FileMode.Open, FileAccess.ReadWrite)))
+            using(BinaryReader br = new BinaryReader(new FileStream(Path, FileMode.Open, FileAccess.ReadWrite)))
             {                
                 using(BinaryWriter bw = new BinaryWriter(br.BaseStream))
                 {
@@ -72,6 +72,6 @@ namespace FormFileStore
                 }
             }
 
-            }
+        }
     }
 }
