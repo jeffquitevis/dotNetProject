@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Model;
+using FormFileStore.Controller;
+using FormFileStore.Model;
 
-namespace FormFileStore
+namespace FormFileStore.Form
 {
-    public partial class Form1 : Form
+    public partial class Form1 : System.Windows.Forms.Form
     {
         private PersonStoreController psc = new PersonStoreController(new DataStoreFile());
 
@@ -25,6 +18,9 @@ namespace FormFileStore
         {
             
             psc.Add(new Person(Convert.ToInt64(tbId.Text),tbFirstName.Text, tbLastName.Text ));
+            tbId.Clear();
+            tbFirstName.Clear();
+            tbLastName.Clear();
 
         }
 
@@ -33,8 +29,12 @@ namespace FormFileStore
             
             Person tempPerson = psc.Search(Convert.ToInt64(tbSearchId.Text));
 
-            rtbSearchResult.AppendText(tempPerson.FirstName);
-         
+            rtbSearchResult.Clear();
+            rtbSearchResult.AppendText("ID: " + tempPerson.Id);
+            rtbSearchResult.AppendText("\n");
+            rtbSearchResult.AppendText("FIRSTNAME: " + tempPerson.FirstName);
+            rtbSearchResult.AppendText("\n");
+            rtbSearchResult.AppendText("LASTNAME: "+ tempPerson.LastName);     
         }
 
         private void bDelete_Click(object sender, EventArgs e)

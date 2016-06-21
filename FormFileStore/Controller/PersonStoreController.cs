@@ -1,7 +1,6 @@
-﻿using FormFileStore;
-using Model;
+﻿using FormFileStore.Model;
 
-namespace Controller
+namespace FormFileStore.Controller
 {
     public class PersonStoreController
     {
