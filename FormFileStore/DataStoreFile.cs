@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
 using System.IO;
-using System.Collections;
+using FormFileStore.Model;
+
 
 namespace FormFileStore
 {
@@ -17,12 +14,16 @@ namespace FormFileStore
     
         public DataStoreFile()
         {
-           
+
             if (!File.Exists(Path))
             {
                 FileStream file = File.Create(Path);
                 file.Close();
-                
+
+            }
+            else
+            {
+                Initialize();
             }
             
         }
@@ -55,7 +56,7 @@ namespace FormFileStore
                 
                 if (br.ReadBoolean() == false)
                 {
-                    tempPerson = new Person(br.ReadInt64(), br.ReadString(), br.ReadString());
+                        tempPerson = new Person(br.ReadInt64(), br.ReadString(), br.ReadString());
                 }         
             }
             return tempPerson;      
@@ -72,6 +73,38 @@ namespace FormFileStore
                 }
             }
 
+        }
+
+        public void Initialize()
+        {
+                     
+            using (BinaryReader br = new BinaryReader(new FileStream(Path, FileMode.Open, FileAccess.Read)))
+            {
+               
+                using (BinaryWriter bw = new BinaryWriter(new MemoryStream()))
+                {
+
+                    long index = 0;
+
+                    for (long x = 0; x < br.BaseStream.Length; x = index)
+                    {
+
+                        bool isDelete = br.ReadBoolean();
+                        Person tempPerson = new Person(br.ReadInt64(), br.ReadString(), br.ReadString());
+
+                        bw.Write(isDelete);
+                        bw.Write(tempPerson.Id);
+                        bw.Write(tempPerson.FirstName);
+                        bw.Write(tempPerson.LastName);
+
+                        position.Add(Convert.ToInt64(tempPerson.Id), index);
+                        index = bw.BaseStream.Length;
+                    }
+                       
+
+                    
+                }
+            }
         }
     }
 }

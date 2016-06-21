@@ -1,4 +1,4 @@
-﻿namespace FormFileStore
+﻿namespace FormFileStore.Form
 {
     partial class Form1
     {
@@ -47,7 +47,7 @@
             this.tbFirstName.Location = new System.Drawing.Point(134, 87);
             this.tbFirstName.Name = "tbFirstName";
             this.tbFirstName.Size = new System.Drawing.Size(100, 20);
-            this.tbFirstName.TabIndex = 0;
+            this.tbFirstName.TabIndex = 1;
             // 
             // label1
             // 
@@ -88,7 +88,7 @@
             this.tbId.Location = new System.Drawing.Point(134, 61);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(100, 20);
-            this.tbId.TabIndex = 4;
+            this.tbId.TabIndex = 0;
             // 
             // bAdd
             // 
