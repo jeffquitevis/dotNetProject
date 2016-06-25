@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\DatabaseStoreController.cs" />
+    <Compile Include="DataStoreDatabase.cs" />
     <Compile Include="Form\AddPopUp.cs">
       <SubType>Form</SubType>
     </Compile>
