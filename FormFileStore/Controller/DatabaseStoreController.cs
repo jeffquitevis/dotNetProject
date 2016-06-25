@@ -26,5 +26,10 @@ namespace FormFileStore.Controller
         {
             return dataStore.SearchPerson(id);
         }
+
+        public void Delete(long id)
+        {
+            dataStore.DeletePerson(id);
+        }
     }
 }
