@@ -45,15 +45,13 @@ namespace FormFileStore
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-              
-               
+                           
                 connection.Open();               
                 SqlDataAdapter select = new SqlDataAdapter();
                 select.SelectCommand = new SqlCommand("Select * from Person WHERE PersonID = @Id",connection);
                 select.SelectCommand.Parameters.AddWithValue("@Id", id);
                 SqlDataReader reader = select.SelectCommand.ExecuteReader();
                 
-
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -73,6 +71,20 @@ namespace FormFileStore
         public void DeletePerson(long id)
         {
           
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+
+                connection.Open();
+                SqlDataAdapter select = new SqlDataAdapter();
+                select.SelectCommand = new SqlCommand("DELETE  from Person WHERE PersonID = @Id", connection);
+                select.SelectCommand.Parameters.AddWithValue("@Id", id);
+                SqlDataReader reader = select.SelectCommand.ExecuteReader();
+                reader.Close();
+
+            }
+
         }
     }
 }

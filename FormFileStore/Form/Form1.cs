@@ -43,6 +43,7 @@ namespace FormFileStore.Form
         private void bDelete_Click(object sender, EventArgs e)
         {
             //psc.Delete(Convert.ToInt64(tbDelete.Text));
+            dsc.Delete(Convert.ToInt64(tbDelete.Text));
         }
     }
 }
