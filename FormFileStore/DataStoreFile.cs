@@ -28,6 +28,7 @@ namespace FormFileStore
             
         }
 
+        
         public void AddPerson(Person person)
         {
                     
@@ -39,6 +40,7 @@ namespace FormFileStore
                 bw.Write(person.FirstName);
                 bw.Write(person.LastName);
                 position.Add(person.Id, index);
+                
                 index = bw.BaseStream.Length;               
             }
 
@@ -73,6 +75,11 @@ namespace FormFileStore
                 }
             }
 
+        }
+
+        public HashSet<Person> GetAll()
+        {
+            throw new NotImplementedException();
         }
 
         public void Initialize()

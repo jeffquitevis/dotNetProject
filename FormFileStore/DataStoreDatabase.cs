@@ -15,20 +15,15 @@ namespace FormFileStore
         private string connectionString = @"Data Source=JEFFSTEPHEN\SQLEXPRESS;Initial Catalog=Person;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 
-        public DataStoreDatabase()
-        {
-            
-        }
-
         public void AddPerson(Person person)
         {
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                ;
+                
                 SqlDataAdapter insert = new SqlDataAdapter();
-                insert.InsertCommand = new SqlCommand("Insert into Person (PersonId,FirstName,LastName) Values (@Id,@Fname,@Lname)",connection);
+                insert.InsertCommand = new SqlCommand(@"INSERT INTO Person (PersonId,FirstName,LastName) VALUES (@Id,@Fname,@Lname)",connection);            
                 insert.InsertCommand.Parameters.AddWithValue("@Id",person.Id);
                 insert.InsertCommand.Parameters.AddWithValue("@Fname", person.FirstName);
                 insert.InsertCommand.Parameters.AddWithValue("@Lname", person.LastName);
@@ -46,22 +41,24 @@ namespace FormFileStore
             {
 
                            
-                connection.Open();               
-                SqlDataAdapter select = new SqlDataAdapter();
-                select.SelectCommand = new SqlCommand("Select * from Person WHERE PersonID = @Id",connection);
-                select.SelectCommand.Parameters.AddWithValue("@Id", id);
-                SqlDataReader reader = select.SelectCommand.ExecuteReader();
-                
-                if (reader.HasRows)
+                connection.Open();
+                using (SqlDataAdapter select = new SqlDataAdapter())
                 {
-                    while (reader.Read())
+                    select.SelectCommand = new SqlCommand(@"SELECT * from Person WHERE PersonID = @Id", connection);
+                    select.SelectCommand.Parameters.AddWithValue("@Id", id);
+                    using (SqlDataReader reader = select.SelectCommand.ExecuteReader())
                     {
-                         tempPerson = new Person((long) Convert.ToUInt64(reader["PersonID"].ToString()),reader["FirstName"].ToString(),reader["LastName"].ToString());
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                tempPerson = new Person((long)Convert.ToUInt64(reader["PersonID"].ToString()), reader["FirstName"].ToString(), reader["LastName"].ToString());
+                            }
+
+                        }
                     }
-                   
-                }
-                
-                reader.Close();
+              
+                }          
 
             }
 
@@ -71,19 +68,49 @@ namespace FormFileStore
         public void DeletePerson(long id)
         {
           
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
 
-
                 connection.Open();
-                SqlDataAdapter select = new SqlDataAdapter();
-                select.SelectCommand = new SqlCommand("DELETE  from Person WHERE PersonID = @Id", connection);
-                select.SelectCommand.Parameters.AddWithValue("@Id", id);
-                SqlDataReader reader = select.SelectCommand.ExecuteReader();
-                reader.Close();
+
+                using (SqlDataAdapter delete = new SqlDataAdapter())
+                {
+                    delete.DeleteCommand = new SqlCommand(@"DELETE  from Person WHERE PersonID = @Id", connection);
+                    delete.DeleteCommand.Parameters.AddWithValue("@Id", id);
+                    delete.DeleteCommand.ExecuteReader();
+                }            
 
             }
+
+        }
+
+        public HashSet<Person> GetAll()
+        {
+            HashSet<Person> tempSet = new HashSet<Person>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                
+                connection.Open();
+                using (SqlDataAdapter selectAll = new SqlDataAdapter())
+                {
+                    selectAll.SelectCommand = new SqlCommand("SELECT * FROM Person",connection);
+
+                    using (SqlDataReader reader = selectAll.SelectCommand.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                tempSet.Add(new Person((long)Convert.ToUInt64(reader["PersonID"].ToString()), reader["FirstName"].ToString(), reader["LastName"].ToString()));
+                            }
+
+                        }
+                    }              
+                      
+                }
+            }
+
+            return tempSet;
 
         }
     }
