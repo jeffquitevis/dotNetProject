@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using FormFileStore.Controller;
 using FormFileStore.Model;
 
@@ -17,63 +18,94 @@ namespace FormFileStore.View
         }
 
         private void bAdd_Click(object sender, EventArgs e)
-        {          
-            dbc.Insert();
+        {
+            try
+            {
+                dbc.Insert();
+
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(@"Format Invalid");
+                throw;
+            }
+            
         }
 
         private void bSearch_Click(object sender, EventArgs e)
         {
-            dbc.Select();
+            try
+            {
+                dbc.Select();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show(@"No Record Found" + " " + ex.StackTrace);
+                throw;
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(@"Wrong format" +" " + ex.StackTrace);
+                throw;
+            }
+            
         }
 
         private void bDelete_Click(object sender, EventArgs e)
         {
             dbc.Delete();
+          
         }
 
         private void bGetAll_Click(object sender, EventArgs e)
         {
 
-            dbc.GetAllPerson();
+            try
+            {
+                dbc.GetAllPerson();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show(@"No Record Found");
+            }
+            
         }
 
 
-        public long Id
+        public TextBox Id
         {
-            get {return Convert.ToInt64(tbId.Text); }
+            get {return tbId; }
             set { tbId.Text = Convert.ToInt64(value).ToString(); }
         }
 
-        public string FirstNameText
+        public TextBox FirstNameText
         {
-            get { return tbFirstName.Text; }
-            set { tbFirstName.Text = value; }
+            get { return tbFirstName; }
+            
         }
 
-        public string LastNameText
+        public TextBox LastNameText
         {
-            get {return  tbLastName.Text;}
-            set { tbLastName.Text = value; }
+            get { return tbLastName; }
+           
         }
 
-        public long SearchText
+        public TextBox SearchText
         {
-            get {return  Convert.ToInt64(tbSearchId.Text); }
+            get {return  tbSearchId; }
             set { tbSearchId.Text = value.ToString();}
         }
 
 
         public RichTextBox SearchResult
         {
-            get { return rtbSearchResult; }
-
-            set { rtbSearchResult.Text = value.ToString(); }
+            get { return rtbSearchResult; }           
         }
 
-        public long DeleteText
+        public TextBox DeleteText
         {
-            get { return Convert.ToInt64(tbDelete.Text); }
-            set { tbDelete.Text = value.ToString(); }
+            get { return tbDelete; }
+           
         }
 
         public RichTextBox GetAll

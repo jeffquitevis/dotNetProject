@@ -23,26 +23,34 @@ namespace FormFileStore.Controller
 
         public void Insert()
         {
-            dataStore.AddPerson(new Person(view.Id,view.FirstNameText,view.LastNameText));
+            dataStore.AddPerson(new Person(Convert.ToInt64(view.Id.Text),view.FirstNameText.Text,view.LastNameText.Text));
+
+            view.Id.Clear();
+            view.FirstNameText.Clear();
+            view.LastNameText.Clear();            
+
+
         }
 
         public Person Select()
         {
-            Person tempPerson = dataStore.SearchPerson(view.SearchText);
+            Person tempPerson = dataStore.SearchPerson(Convert.ToInt64(view.SearchText.Text));
 
             view.SearchResult.Clear();
+            view.SearchText.Clear();
             view.SearchResult.AppendText(@"PERSON ID: " + Convert.ToString(tempPerson.Id));
             view.SearchResult.AppendText("\n");
             view.SearchResult.AppendText(@"PERSON FIRSTNAME: "+ tempPerson.FirstName);
             view.SearchResult.AppendText("\n");
             view.SearchResult.AppendText(@"PERSON LASTNAME: " + tempPerson.LastName);
+            
 
             return tempPerson;
         }
 
         public void Delete()
         {
-            dataStore.DeletePerson(view.DeleteText);
+            dataStore.DeletePerson(Convert.ToInt64(view.DeleteText.Text));
         }
 
         public HashSet<Person> GetAllPerson()
@@ -59,7 +67,6 @@ namespace FormFileStore.Controller
                 view.SearchResult.AppendText(@"PERSON LASTNAME: " + person.LastName);
                 view.SearchResult.AppendText("\n");
                 view.SearchResult.AppendText("\n");
-
             }
 
             return tempHashSet;

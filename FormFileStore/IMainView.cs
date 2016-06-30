@@ -10,13 +10,13 @@ namespace FormFileStore
 {
     interface IMainView
     {
-        long Id { get; set; }
-        string FirstNameText { get; set; }
-        string LastNameText { get; set; }
-        long SearchText { get; set; }
-        RichTextBox SearchResult { get; set; }
-        long DeleteText { get; set; }
-        RichTextBox GetAll { get; set; }
+        TextBox Id { get; }
+        TextBox FirstNameText { get;  }
+        TextBox LastNameText { get; }
+        TextBox SearchText { get; }
+        RichTextBox SearchResult { get;  }
+        TextBox DeleteText { get; }
+        RichTextBox GetAll { get; }
 
 
     }
